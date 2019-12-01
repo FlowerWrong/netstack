@@ -85,7 +85,7 @@ func (r *receiver) getSendParams() (rcvNxt seqnum.Value, rcvWnd seqnum.Size) {
 // in such cases we may need to send an ack to indicate to our peer that it can
 // resume sending data.
 func (r *receiver) nonZeroWindow() {
-	if (r.rcvAcc-r.rcvNxt)>>r.rcvWndScale != 0 {
+	if (r.rcvAcc-r.rcvNxt)>>r.rcvWndScale == 0 {
 		// We never got around to announcing a zero window size, so we
 		// don't need to immediately announce a nonzero one.
 		return

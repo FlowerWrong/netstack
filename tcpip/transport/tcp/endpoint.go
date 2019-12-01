@@ -646,6 +646,12 @@ func (e *endpoint) zeroReceiveWindow(scale uint8) bool {
 	if e.rcvBufUsed >= e.rcvBufSize {
 		return true
 	}
+	
+	if freeSpace := e.rcvBufSize - e.rcvBufUsed; freeSpace < (e.rcvBufSize >> 1) {
+		if freeSpace < (e.rcvBufSize >> 4) || freeSpace < 2048 {
+			return true
+		}
+	}
 
 	return ((e.rcvBufSize - e.rcvBufUsed) >> scale) == 0
 }
